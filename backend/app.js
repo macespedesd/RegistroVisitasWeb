@@ -1,37 +1,20 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
-
-dotenv.config();
+const connectDB = require('./config/db');
+require('dotenv').config();
 
 const app = express();
 
-// Middleware
+// Conectar a la base de datos
+connectDB();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Database connection
-require('./config/db');
-
-// Routes
-const visitasRoutes = require('./routes/visitas');
-const authRoutes = require('./routes/auth');
-
-app.use('/api/visitas', visitasRoutes);
-app.use('/api/auth', authRoutes);
-
-// Root endpoint
-app.get('/', (req, res) => {
-  res.json({ message: 'API de Registro de Visitas' });
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Algo salió mal!' });
-});
+// Rutas
+app.use('/api/visitas', require('./routes/visitas'));
+app.use('/api/auth', require('./routes/auth'));
 
 const PORT = process.env.PORT || 5000;
 

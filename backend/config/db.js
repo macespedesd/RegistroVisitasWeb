@@ -1,18 +1,14 @@
 const mongoose = require('mongoose');
-
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/registro_visitas', {
+    await mongoose.connect('mongodb://localhost:27017/registrovisitas', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(`MongoDB conectado: ${conn.connection.host}`);
+    console.log('MongoDB conectado');
   } catch (error) {
-    console.error(`Error de conexión: ${error.message}`);
+    console.error('Error de conexión:', error.message);
     process.exit(1);
   }
 };
-
-connectDB();
-
-module.exports = mongoose;
+module.exports = connectDB;
